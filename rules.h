@@ -1,0 +1,459 @@
+/*  Intermediate Code
+ *  Homework 4
+ *  CS 445, Dr. Jeffery
+ *  Nov. 24, 2014
+ *  Kathryn Price
+ */
+
+#define ADDALLLIBS 100
+#define ADDSTRLIBS 200
+#define NUMOFRULES 400
+
+int ruleArray[NUMOFRULES];
+char *ruleStr[NUMOFRULES];
+
+/*----------------------------------------------------------------------
+ * Context-dependent identifiers. 1000
+ *----------------------------------------------------------------------*/
+//#define IDENTIFIERS_TYPEDEF 1001
+//#define IDENTIFIERS_NAMESPACE 1011
+#define IDENTIFIERS_ORIG_NS 1021
+#define IDENTIFIERS_CLASS 1031
+
+/*----------------------------------------------------------------------
+ * Lexical elements. 1100
+ *----------------------------------------------------------------------*/
+#define LEXICAL_IDENT 1101 
+//#define LEXICAL_LITERAL 1111 
+//#define LEXICAL_LITERAL2 1112
+//#define LEXICAL_LITERAL3 1113
+//#define LEXICAL_LITERAL4 1114
+//#define LEXICAL_LITERAL5 1115
+#define LEXICAL_INTLIT 1121 
+#define LEXICAL_CHARLIT 1131 
+#define LEXICAL_FLOATLIT 1141 
+#define LEXICAL_STRINGLIT 1151 
+#define LEXICAL_BOOLLIT 1161 
+#define LEXICAL_BOOLLIT2 1162
+
+/*----------------------------------------------------------------------
+ * Translation unit. 1200
+ *----------------------------------------------------------------------*/
+//#define TRANSLATION 1201 
+
+/*----------------------------------------------------------------------
+ * Expressions. 4000 - 4300
+ *----------------------------------------------------------------------*/
+//#define EXPRESSION_PRIMARY 4001 
+//#define EXPRESSION_PRIMARY2 4002
+//#define EXPRESSION_PRIMARY3 4003
+//#define EXPRESSION_PRIMARY4 4004
+//#define EXPRESSION_ID 4011
+//#define EXPRESSION_ID2 4012
+//#define EXPRESSION_UQID 4021
+//#define EXPRESSION_UQID2 4022
+//#define EXPRESSION_UQID3 4023
+#define EXPRESSION_QID 4031
+//#define EXPRESSION_NESTED_NAME 4041
+//#define EXPRESSION_NESTED_NAME2 4042
+//#define EXPRESSION_NESTED_NAME3 4043
+//#define EXPRESSION_POSTFIX 4051
+#define EXPRESSION_POSTFIX2 4052  //precode
+#define EXPRESSION_POSTFIX3 4053 //precode
+//#define EXPRESSION_POSTFIX4 4054
+#define EXPRESSION_POSTFIX5 4055 //precode
+//#define EXPRESSION_POSTFIX6 4056
+//#define EXPRESSION_POSTFIX7 4057
+#define EXPRESSION_POSTFIX8 4058
+#define EXPRESSION_POSTFIX9 4059
+//#define EXPRESSION_POSTFIX10 4060
+//#define EXPRESSION_POSTFIX11 4061
+//#define EXPRESSION_POSTFIX12 4062
+//#define EXPRESSION_LIST 4071
+#define EXPRESSION_LIST2 4072 //precode
+//#define EXPRESSION_UNEX 4081
+#define EXPRESSION_UNEX2 4082
+#define EXPRESSION_UNEX3 4083
+#define EXPRESSION_UNEX4 4084
+#define EXPRESSION_UNEX5 4085
+#define EXPRESSION_UNEX6 4086
+//#define EXPRESSION_UNEX7 4087
+//#define EXPRESSION_UNEX8 4088
+//#define EXPRESSION_UNEX9 4089
+//#define EXPRESSION_UNEX10 4090
+#define EXPRESSION_UNOP 4101
+#define EXPRESSION_UNOP2 4102
+#define EXPRESSION_UNOP3 4103
+#define EXPRESSION_UNOP4 4104
+#define EXPRESSION_NEWEX 4111 //120++, precode
+//#define EXPRESSION_NEWEX2 4112
+#define EXPRESSION_NEWEX3 4113
+//#define EXPRESSION_NEWEX4 4114
+//#define EXPRESSION_NEWPL 4121 
+#define EXPRESSION_NEWTYPE 4131
+#define EXPRESSION_NEWDEC 4141 
+//#define EXPRESSION_NEWDEC2 4142
+//#define EXPRESSION_DIRDEC 4151 
+#define EXPRESSION_DIRDEC2 4152
+//#define EXPRESSION_NEWINIT 4161
+#define EXPRESSION_DELEX 4171 
+//#define EXPRESSION_DELEX2 4172
+//#define EXPRESSION_DELEX3 4173
+//#define EXPRESSION_DELEX4 4174
+//#define EXPRESSION_CAST 4181 
+#define EXPRESSION_CAST2 4182
+//#define EXPRESSION_PM 4191 
+#define EXPRESSION_PM2 4192
+#define EXPRESSION_PM3 4193
+//#define EXPRESSION_MULT 4201 
+#define EXPRESSION_MULT2 4202 //120, precode
+#define EXPRESSION_MULT3 4203 //120, precode
+#define EXPRESSION_MULT4 4204 //120, precode
+//#define EXPRESSION_ADD 4211 
+#define EXPRESSION_ADD2 4212 //120, precode
+#define EXPRESSION_ADD3 4213 //120, precode
+//#define EXPRESSION_SHIFT 4221
+#define EXPRESSION_SHIFT2 4222
+#define EXPRESSION_SHIFT3 4223
+//#define EXPRESSION_REL 4231 
+#define EXPRESSION_REL2 4232
+#define EXPRESSION_REL3 4233
+#define EXPRESSION_REL4 4234
+#define EXPRESSION_REL5 4235
+//#define EXPRESSION_EQ 4241 
+#define EXPRESSION_EQ2 4242 //120, precode
+#define EXPRESSION_EQ3 4243
+//#define EXPRESSION_AND 4251 
+//#define EXPRESSION_AND2 4252
+//#define EXPRESSION_OR 4261 
+//#define EXPRESSION_OR2 4262
+//#define EXPRESSION_IOR 4271
+//#define EXPRESSION_IOR2 4272
+//#define EXPRESSION_LOGAND 4281
+#define EXPRESSION_LOGAND2 4282
+//#define EXPRESSION_LOGOR 4291 
+#define EXPRESSION_LOGOR2 4292
+#define EXPRESSION_COND 4301 
+//#define EXPRESSION_COND2 4302
+//#define EXPRESSION_ASN 4311 
+#define EXPRESSION_ASN2 4312 //120, precode
+//#define EXPRESSION_ASN3 4313
+#define EXPRESSION_OP 4321 //120, precode
+#define EXPRESSION_OP2 4322 //120, precode
+#define EXPRESSION_OP3 4323 //120, precode
+#define EXPRESSION_OP4 4324 //120, precode
+#define EXPRESSION_OP5 4325 //120, precode
+#define EXPRESSION_OP6 4326 //120, precode
+//#define EXPRESSION_OP7 4327
+//#define EXPRESSION_OP8 4328
+//#define EXPRESSION_OP9 4329
+//#define EXPRESSION_OP10 4330
+//#define EXPRESSION_OP11 4331
+//#define EXPRESSION_EX 4341
+#define EXPRESSION_EX2 4342
+//#define EXPRESSION_CONSTEX 4351
+
+/*----------------------------------------------------------------------
+ * Statements. 4500
+ *----------------------------------------------------------------------*/
+#define STATEMENTS_STMT 4501 
+#define STATEMENTS_STMT2 4502
+#define STATEMENTS_STMT3 4503
+#define STATEMENTS_STMT4 4504
+#define STATEMENTS_STMT5 4505
+#define STATEMENTS_STMT6 4506
+#define STATEMENTS_STMT7 4507
+#define STATEMENTS_LABEL 4511
+#define STATEMENTS_LABEL2 4512
+//#define STATEMENTS_LABEL3 4513
+#define STATEMENTS_EX 4521 
+//#define STATEMENTS_COMP 4531
+//#define STATEMENTS_STSEQ 4541
+#define STATEMENTS_STSEQ2 4542
+#define STATEMENTS_SEL 4551   //precode
+#define STATEMENTS_SEL2 4552 
+#define STATEMENTS_SEL3 4553  
+//#define STATEMENTS_COND 4561 
+#define STATEMENTS_COND2 4562
+#define STATEMENTS_ITER 4571 
+#define STATEMENTS_ITER2 4572
+#define STATEMENTS_ITER3 4573
+#define STATEMENTS_FOR 4581 
+#define STATEMENTS_FOR2 4582
+#define STATEMENTS_JUMP 4591
+#define STATEMENTS_JUMP2 4592
+#define STATEMENTS_JUMP3 4593 //precode
+//#define STATEMENTS_JUMP4 4594
+//#define STATEMENTS_DECL 4599
+
+/*----------------------------------------------------------------------
+ * Declarations. 5000 - 5200
+ *----------------------------------------------------------------------*/
+#define DECLARATIONS_SEQ 5001 
+//#define DECLARATIONS_DECL 5011 
+//#define DECLARATIONS_DECL2 5012
+//#define DECLARATIONS_DECL3 5013
+//#define DECLARATIONS_DECL4 5014
+//#define DECLARATIONS_DECL5 5015
+//#define DECLARATIONS_DECL6 5016
+//#define DECLARATIONS_BLOCK 5021
+//#define DECLARATIONS_BLOCK2 5022
+//#define DECLARATIONS_BLOCK3 5023
+//#define DECLARATIONS_BLOCK4 5024
+#define DECLARATIONS_SIMPLE 5031
+//#define DECLARATIONS_SIMPLE2 5032
+//#define DECLARATIONS_DECLSP 5041 
+//#define DECLARATIONS_DECLSP2 5042
+//#define DECLARATIONS_DECLSP3 5043
+//#define DECLARATIONS_DECLSP4 5044
+#define DECLARATIONS_DECLSEQ 5051
+//#define DECLARATIONS_STCL 5061 
+//#define DECLARATIONS_STCL2 5062
+//#define DECLARATIONS_STCL3 5063
+//#define DECLARATIONS_STCL4 5064
+//#define DECLARATIONS_FUNSP 5071
+//#define DECLARATIONS_FUNSP2 5072
+//#define DECLARATIONS_FUNSP3 5073
+//#define DECLARATIONS_TYPESP 5081
+//#define DECLARATIONS_TYPESP2 5082
+//#define DECLARATIONS_TYPESP3 5083
+//#define DECLARATIONS_TYPESP4 5084
+//#define DECLARATIONS_SIMPLETP 5091
+#define DECLARATIONS_SIMPLETP2 5092
+//#define DECLARATIONS_SIMPLETP3 5093
+#define DECLARATIONS_SIMPLETP4 5094
+//#define DECLARATIONS_SIMPLETP5 5095
+#define DECLARATIONS_SIMPLETP6 5096
+#define DECLARATIONS_SIMPLETP7 5097
+#define DECLARATIONS_SIMPLETP8 5098
+#define DECLARATIONS_SIMPLETP9 5099
+//#define DECLARATIONS_SIMPLETP10 5100
+//#define DECLARATIONS_SIMPLETP11 5101
+#define DECLARATIONS_SIMPLETP12 5102
+#define DECLARATIONS_SIMPLETP13 5103
+#define DECLARATIONS_SIMPLETP14 5104
+//#define DECLARATIONS_TYPENM 5111 
+//#define DECLARATIONS_TYPENM2 5112
+//#define DECLARATIONS_ETYPE 5121 
+#define DECLARATIONS_ETYPE2 5122
+//#define DECLARATIONS_ETYPE3 5123
+//#define DECLARATIONS_NS 5131 
+//#define DECLARATIONS_NS2 5132
+//#define DECLARATIONS_NAMEDNS 5141 
+//#define DECLARATIONS_NAMEDNS2 5142
+//#define DECLARATIONS_ORIGNS 5151 
+//#define DECLARATIONS_EXNS 5161 
+//#define DECLARATIONS_UNNS 5171 
+//#define DECLARATIONS_NSBODY 5181 
+//#define DECLARATIONS_NSALIAS 5191 
+//#define DECLARATIONS_QUALNS 5201
+//#define DECLARATIONS_QUALNS2 5202
+//#define DECLARATIONS_QUALNS3 5203
+//#define DECLARATIONS_QUALNS4  5204
+//#define DECLARATIONS_USINGDEC 5211
+//#define DECLARATIONS_USINGDEC2 5212
+//#define DECLARATIONS_USINGDEC3 5213
+//#define DECLARATIONS_USINGDEC4 5214
+//#define DECLARATIONS_USINGDEC5 5215
+//#define DECLARATIONS_USINGDIR 5221 
+//#define DECLARATIONS_ASM 5231 
+//#define DECLARATIONS_LINK 5241 
+//#define DECLARATIONS_LINK2 5242
+
+/*----------------------------------------------------------------------
+ * Declarators. 5500 - 5600
+ *----------------------------------------------------------------------*/
+//#define DECLARATORS_INITLIST 5501 
+#define DECLARATORS_INITLIST2 5502
+#define DECLARATORS_INIT 5511 //120, precode
+//#define DECLARATORS_DECL 5521 
+#define DECLARATORS_DECL2 5522
+//#define DECLARATORS_DIRDEC 5531
+#define DECLARATORS_DIRDEC2 5532
+//#define DECLARATORS_DIRDEC3 5533
+//#define DECLARATORS_DIRDEC4 5534
+#define DECLARATORS_DIRDEC5 5535
+#define DECLARATORS_DIRDEC6 5536
+//#define DECLARATORS_DIRDEC7 5537
+//#define DECLARATORS_DIRDEC8 5538
+#define DECLARATORS_DIRDEC9 5539
+//#define DECLARATORS_DIRDEC10 5540
+#define DECLARATORS_PTR 5541 
+//#define DECLARATORS_PTR2 5542
+#define DECLARATORS_PTR3 5543
+//#define DECLARATORS_PTR4 5544
+//#define DECLARATORS_PTR5 5545
+//#define DECLARATORS_PTR6 5546
+//#define DECLARATORS_PTR7 5547
+//#define DECLARATORS_CVSEQ 5551 
+//#define DECLARATORS_CVSEQ2 5552
+#define DECLARATORS_CV 5561 
+//#define DECLARATORS_ID 5571 
+//#define DECLARATORS_ID2 5572
+//#define DECLARATORS_ID3 5573
+//#define DECLARATORS_ID4 5574
+#define DECLARATORS_TYPE 5581 
+#define DECLARATORS_TYPESEQ 5591 
+#define DECLARATORS_ABST 5601 
+//#define DECLARATORS_ABST2 5602
+//#define DECLARATORS_DIRAB 5611 
+//#define DECLARATORS_DIRAB2 5612
+//#define DECLARATORS_DIRAB3 5613
+#define DECLARATORS_DIRAB4 5614
+#define DECLARATORS_DIRAB5 5615
+//#define DECLARATORS_DIRAB6 5616
+//#define DECLARATORS_PARAMCL 5621
+//#define DECLARATORS_PARAMLS 5631
+#define DECLARATORS_PARAMLS2 5632
+#define DECLARATORS_PARAMDC 5641 
+//#define DECLARATORS_PARAMDC2 5642
+#define DECLARATORS_PARAMDC3 5643
+//#define DECLARATORS_PARAMDC4 5644
+#define DECLARATORS_FUN 5651 // precode
+#define DECLARATORS_FUN2 5652 //120, precode
+#define DECLARATORS_FUN3 5653
+//#define DECLARATORS_FUNBOD 5661
+//#define DECLARATORS_INIZ 5671 
+//#define DECLARATORS_INIZ2 5672
+//#define DECLARATORS_INIZC 5681
+#define DECLARATORS_INIZC2 5682
+#define DECLARATORS_INIZL 5691 
+//#define DECLARATORS_INIZL2 5692
+
+/*----------------------------------------------------------------------
+ * Classes. 6000
+ *----------------------------------------------------------------------*/
+#define CLASSES_SPEC 6001
+#define CLASSES_HEAD 6011
+#define CLASSES_HEAD2 6012
+#define CLASSES_HEAD3 6013
+#define CLASSES_HEAD4 6014
+#define CLASSES_KEY 6021 
+//#define CLASSES_KEY2 6022
+#define CLASSES_MEMSPEC 6031
+#define CLASSES_MEMSPEC2 6032
+#define CLASSES_MEMDEC 6041 
+//#define CLASSES_MEMDEC2 6042
+//#define CLASSES_MEMDEC3 6043
+//#define CLASSES_MEMDEC4 6044
+#define CLASSES_MEMDEC5 6045
+//#define CLASSES_MEMDEC6 6046
+//#define CLASSES_MEMDEC7 6047
+//#define CLASSES_MEMLS 6051 
+#define CLASSES_MEMLS2 6052
+#define CLASSES_MEMDC 6061 
+#define CLASSES_MEMDC2 6062
+#define CLASSES_MEMDC3 6063
+//#define CLASSES_CONST 6071 
+
+/*----------------------------------------------------------------------
+ * Derived classes. 6100
+ *----------------------------------------------------------------------*/
+//#define DCLASSES_BASE 6101 
+//#define DCLASSES_BASESPL 6111 
+#define DCLASSES_BASESPL2 6112
+//#define DCLASSES_BASESP 6121 
+//#define DCLASSES_BASESP2 6122
+#define DCLASSES_BASESP3 6123
+//#define DCLASSES_BASESP4 6124
+#define DCLASSES_BASESP5 6125
+#define DCLASSES_BASESP6 6126
+#define DCLASSES_ACCESS 6131 
+#define DCLASSES_ACCESS2 6132
+
+/*----------------------------------------------------------------------
+ * Special member functions. 6200
+ *----------------------------------------------------------------------*/
+#define SPCMEM_CONVFUN 6201 
+#define SPCMEM_CONVID 6211 
+#define SPCMEM_CONVDC 6221 
+//#define SPCMEM_CTOR 6231 
+//#define SPCMEM_MEMLIST 6241 
+#define SPCMEM_MEMLIST2 6242
+#define SPCMEM_MEMINIT 6251 
+//#define SPCMEM_MEMID 6261 
+//#define SPCMEM_MEMID2 6262
+#define SPCMEM_MEMID3 6263
+//#define SPCMEM_MEMID4 6264
+//#define SPCMEM_MEMID5 6265
+
+/*----------------------------------------------------------------------
+ * Overloading. 6300
+ *----------------------------------------------------------------------*/
+#define OVERLOAD_FUNID 6301 
+#define OVERLOAD_OP 6311
+#define OVERLOAD_OP2 6312
+#define OVERLOAD_OP3 6313
+#define OVERLOAD_OP4 6314
+#define OVERLOAD_OP5 6315
+#define OVERLOAD_OP6 6316
+#define OVERLOAD_OP7 6317
+#define OVERLOAD_OP8 6318
+#define OVERLOAD_OP9 6319
+#define OVERLOAD_OP10 6320
+#define OVERLOAD_OP11 6321
+#define OVERLOAD_OP12 6322
+#define OVERLOAD_OP13 6323
+#define OVERLOAD_OP14 6324
+#define OVERLOAD_OP15 6325
+#define OVERLOAD_OP16 6326
+#define OVERLOAD_OP17 6327
+#define OVERLOAD_OP18 6328
+#define OVERLOAD_OP19 6329
+//#define OVERLOAD_OP20 6330
+//#define OVERLOAD_OP21 6331
+//#define OVERLOAD_OP22 6332
+#define OVERLOAD_OP23 6333
+#define OVERLOAD_OP24 6334
+#define OVERLOAD_OP25 6335
+#define OVERLOAD_OP26 6336
+#define OVERLOAD_OP27 6337
+#define OVERLOAD_OP28 6338
+#define OVERLOAD_OP29 6339
+#define OVERLOAD_OP30 6340
+#define OVERLOAD_OP31 6341
+#define OVERLOAD_OP32 6342
+#define OVERLOAD_OP33 6343
+#define OVERLOAD_OP34 6344
+#define OVERLOAD_OP35 6345
+#define OVERLOAD_OP36 6346
+#define OVERLOAD_OP37 6347
+//#define OVERLOAD_OP38 6348
+//#define OVERLOAD_OP39 6349
+
+/*----------------------------------------------------------------------
+ * Exception handling. 6400
+ *----------------------------------------------------------------------*/
+//#define EXCEPT_HANDLERSQ 6401 
+#define EXCEPT_DECL 6411 
+#define EXCEPT_DECL2 6412
+//#define EXCEPT_DECL3 6413
+//#define EXCEPT_TYPEID 6421 
+#define EXCEPT_TYPEID2 6422
+
+/*----------------------------------------------------------------------
+ * Epsilon (optional) definitions. 7000
+ *----------------------------------------------------------------------*/
+//#define EPSILON_DECLSEQ 7001 
+//#define EPSILON_NESTEDNM 7011 
+//#define EPSILON_EXLIST 7021 
+//#define EPSILON_DCOLON 7031 
+//#define EPSILON_NEWPLACE 7041
+//#define EPSILON_NEWINIT 7051 
+//#define EPSILON_NEWDECL 7061 
+//#define EPSILON_EXP 7071 
+//#define EPSILON_STMTSEQ 7081
+//#define EPSILON_COND 7091 
+//#define EPSILON_INIT 7101
+//#define EPSILON_CONSTEX 7111
+//#define EPSILON_ABDECL 7121
+//#define EPSILON_TYPESEQ 7131
+//#define EPSILON_DIRABDECL 7141
+//#define EPSILON_CTOR 7151 
+//#define EPSILON_COMMA 7161
+//#define EPSILON_MEMSPEC 7171 
+//#define EPSILON_SM 7181 
+//#define EPSILON_CONVDECL 7191 
+//#define EPSILON_HANDSEQ 7201 
+//#define EPSILON_ASSGNEX 7211
+//#define EPSILON_TYPEID 7221 
