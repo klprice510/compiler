@@ -1,5 +1,5 @@
 # compiler
-Compiler for modified version of C++ into x86_64 assemble.
+Compiler for modified version of C++ into x86_64 assembly.
 
 This is C code to create a compiler for a modified C++ language in the following steps:
   1.  Uses an open source lexical analyzer, Flex, to identify all accepted "words" (lexer.l).
